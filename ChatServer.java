@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.net.Socket;
 
 
 
@@ -20,9 +21,13 @@ public class ChatServer {
             System.out.println("Server nasloucha na portu " + port);
 
             while (true) {
-                Socket socket = serverSocket.accept();
+                Socket socket = new Socket();
+
+                socket = serverSocket.accept();
                 System.out.println("New client connected");
-                // Zde bude logika pro obsluhu klienta
+
+
+
 
             }
         } catch (IOException ex) {
@@ -36,6 +41,7 @@ public class ChatServer {
         ChatServer server = new ChatServer(port);
         server.startServer();
     }
+
 
 
 

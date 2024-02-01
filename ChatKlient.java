@@ -29,8 +29,8 @@ public class ChatKlient {
         // GUI setup
         frame = new JFrame("Chat Client");
         textArea = new JTextArea(20, 50);
-        textArea.setEditable(false);
         textField = new JTextField(50);
+        textArea.setEditable(true);
         sendButton = new JButton("Send");
         frame.getContentPane().add(new JScrollPane(textArea), BorderLayout.CENTER);
         frame.getContentPane().add(textField, BorderLayout.SOUTH);
@@ -41,11 +41,28 @@ public class ChatKlient {
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 writer.println(textField.getText());
                 textField.setText("");
-                textField.requestFocus();
+
             }
         });
+        // Start a new thread that waits for messages from the server
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    while (true) {
+                        String response = reader.readLine();
+                        textArea.append(response + "\n");
+                    }
+                } catch (IOException ex) {
+                    System.out.println("Error reading from server: " + ex.getMessage());
+                    ex.printStackTrace();
+                }
+                }
+        }).start();
     }
 
     public static void main(String[] args) {
