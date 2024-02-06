@@ -18,6 +18,7 @@ public class ChatKlient {
     public ChatKlient(String serverAddress, int serverPort) {
         // Vytvoření socketu a připojení k serveru
         try {
+            InputStream input = socket.getInputStream();
             this.socket = new Socket(serverAddress, serverPort);
             OutputStream output = socket.getOutputStream();
             writer = new PrintWriter(output, true);
